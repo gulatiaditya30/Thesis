@@ -1,0 +1,235 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{xcolor}
+
+
+
+\title {Automated Intelligent Real Time Inspection of Rivet Quality Exploiting/demonstrating/involving/supported  Human Robot Collaboration}
+\author{ Aditya }
+\date{August 2018}
+
+
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+
+\section{Abstract}
+
+\newpage
+
+
+
+
+%=====================================================================================
+\section{Introduction}
+
+
+
+
+
+\subsection{Motivation}
+
+
+\par Year by year technology is advancing at a prodigious rate finding its way in almost all fields that one can think off. Same is the case with heavy machine industries which earlier use to rely on human force and primitive mechanized tools but now is metamorphosing to use of self reliant smart tireless robots across the production lines making the whole production environment more smart and efficient. Robots have found their worth in wide varied categories of industry production ranging from manufacturing minuscule sensitive computer chips to assembly of massive cargo ships, riveting being one of such production process.\\
+
+Riveting is a very simple intuitive process yet is an essential part involved among diverse industry production processes like manufacturing cars, planes, bridges and many more. The process is a simple process of nailing two plates together using a hammer facilitated by humans but now robots performing the same tasks are found to be more faster and efficient specially in hard situations involving heavy machinery or confined tight spaces. for long hours\\
+
+\textcolor{red}{Automation is integrated deep into industry level production of any modern machinery implies the extensive interaction of robots along with humans and with that also arises the underlying imperative need} 
+
+Another aspect of automation is that it demands extensive collaboration between human and their mechanic counterparts which arises the underlying imperative need to formulate novel ways of human interaction with robots. Up until now the interaction between human and their robotic counterparts have been limited to use of monotonous command line interface or a screen based *** device***  which limit the capability of both collaborators compromising the efficiency of the whole process.\\
+ 
+There have been multiple attempts to provide a smart environment which enable a harmonious work flow between the humans and robots and the main emphasis has been on best ways of interaction between them. *** state some paper and some examples***
+
+
+\subsection{Objectives}
+
+As hinted in the previous section the epitome of an ideal production environment involves automation and at the same time inclusion of sophisticated ways of human interactions with robots.
+
+For the course of this thesis we are going to use riveting process performed for joining airplane pressure bulk head with the fuselage as an test case to  demonstrate intelligent autonomous quality inspection supported by novel ways of human robot interaction.
+
+This Thesis aims to replace the existent manual mechanized methodology of rivet quality inspection by an Intelligent automated process which determines the quality by classifying based on the pictures and other physical aspects of the chosen rivet in real time and then also communicating the resulting information to the operator helping him to control the robot in an ubiquitous manner.
+The main objectives of the thesis can be summarized in 2 main tasks:\\\\
+Automatic Intelligent Real Time Quality Check:
+\begin{itemize}
+    \item Determine rivet quality using a classification model based on  :
+    \begin{itemize}
+    \item Rivet Image(eliminating the need of visual inspection)
+    \item Rivet Thickness 
+    \item Riveting Force Torque data
+    \end{itemize}
+\end{itemize}\\
+Real Time Visualization & Human-Machine-Interaction
+\begin{itemize}
+    \item Non intrusive environment robot control using HoloLens
+    \item Exhibit Current robot pose
+    \item Display Current status/ highlights of the rivet process
+
+\end{itemize}
+
+\subsection{Thesis Structure}
+
+The thesis is structured into 5 main chapters   
+Chapter 1 provides a brief overview of the concepts of riveting and some current practices employed in the industry
+chapter 2 concentrates on the possible problems and some identified deficiencies in the current ways of working 
+
+
+
+
+
+
+
+
+%=========================================================================
+ 
+\section{Literature review}
+
+
+
+\subsection{Riveting Process}
+
+Riveting is a process of permanently affixing two mechanical components together.A rivet is composed of three main functional sections. The head on one end providing the the surface to hammer on, the Tail on the other end and a cylindrical shaft running between them.{site wiki}\\ \\
+In the most common method of riveting, a rivet is placed through the drilled hole between the two components and then the head is hammered while the tail is backed against a solid steel base deforming the tail up to double its original size affixing the mechanical components together.\\
+There are multiple types of rivets specializing varied kinds of utilities\\ \\
+
+Solid/round head rivets: solid rivets are one of the most common and  reliable kinds rivets used across all industries. These rivets contains a solid shaft and for installation the tails is deformed by application of force from both head and tail fastening the mechanical components together.There are different types of solid rivets categorized on the shape of the head.   
+    
+    \begin{itemize}
+        \item Round Head : A simple solid head rivet with a round head and a cylindrical shaft
+        \item Countersunk head : rivet having a flat top fitted through countersink holes , specially used to avoid any protrusion and providing a flat surface, ideally used on airplane fuselage and submarines minimizing drag.
+        
+    \end{itemize}
+   
+Blind Rivets : A special kind of rivet which can be installed from one side itself hence making the fastening process more fast and efficient. These kinds of rivets are generally used in airplanes where one has to fasten a lot of rivets fast.
+
+Self Piercing rivets : This is also an one side installation way of riveting but there are no prepared holes in the sheet to be punched through. This process uses a semi- turbulent rivet which forces its way through the first sheet and pushing it inside through the second sheet clinching both of them together without even piercing the second sheet. This type of a rivet is particularly used to make air or liquid tanks having the rivet holes completely sealed.  
+
+
+
+\subsubsection{Industries involving riveting}
+
+
+
+
+\subsubsection{Current riveting process}
+
+As discussed in previous section, Over time many kinds of rivets have been developed catering varied kinds of fastening situations and each kind of rivet has its own way of installation.\\
+
+The most popular and intuitive way is also the most traditional way of having a human operator hold a solid steel chunk providing the base and another operator on the other side hammering the rivet using a simple ball pen hammer.This method requires a lot expertise,effort and time which makes it impractical to consider for big manufacturing industries.\\
+
+This way has been a standard in the past century but as we are living in the age of automation riveting has also advanced its methodologies. Instead of using man power to hammer we use special automated riveting machines.\\
+
+The first method is to use a pneumatic hammer also commonly known as a riveting hammer in which the operator holds and directs the machine onto the rivet and then the machine hammers on the rivet with different intensities. Most of these hand held machines are pneumatically powered. These machines are ideal for applications where there is a need to rivet for agility to rivet at difficult angles and  limited space to install a big riveting machines.\\
+
+Other method is to use a fully automated self sufficient riveting machine ie it doesn't need an operator to direct its 
+
+
+
+
+\subsubsection{Automation rivet process}
+
+\subsubsection{Industry quality standards}
+    discuss all different aspects of rivets along with all the deformities 
+    \begin{itemize}
+        \item shape
+        \item diameter
+        \item width
+        \item angle
+        \item material
+    \end{itemize}
+    Current industry standard\\
+        \begin{itemize}
+            \item eddy current
+            \item visual inspection
+        \end{itemize}
+        Shortfalls of current methods
+        \begin{itemize}
+            \item accuracy
+            \item time consumption 
+            \item expensive 
+            \item efficiency
+        \end{itemize}
+        
+\quad \quad
+
+\subsection{Human Machine Interaction}
+\subsubsection{Definitions ?}
+\subsubsection{different methodologies}
+\subsubsection{Current industry standard}
+    current alternatives to hololens, magic leap, wave 
+
+
+
+
+
+\newpage
+
+\section{Problem statement}
+
+\subsection{Duplex Operator Bot Interaction ? }
+\quad \quad \subsection{Real time Quality Assurance ?}
+
+\newpage
+
+
+\subsection{Quality Check}
+\subsubsection{Available solution}
+\subsubsection{Proposed solution}
+\subsubsection{Methodology}
+\subsubsection{Technology}
+\subsubsubsection{Different NN techniques}
+
+\quad \quad
+
+\section{Concept Development}
+\subsection{Interaction}
+\subsubsection{Available solution}
+\subsubsection{Proposed solution}
+\subsubsection{Methodology}
+\subsubsection{Technology}
+\subsubsubsection{unity}
+
+
+
+\newpage
+
+\section{Implementation}
+
+\subsection{Equipment setup}
+
+\subsection{Interaction}
+\quad\quad
+\subsection{Quality Check}
+\subsubsection{Final Solution Process Flow}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+\section{Results}
+\subsection{Interaction}
+
+\quad\quad
+
+\subsection{Quality Check}
+
+
+
+
+
+
+
+
+\end{document}
