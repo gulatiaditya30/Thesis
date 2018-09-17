@@ -76,7 +76,7 @@ def cnn_model_fn(features, labels, mode):
   dropout = tf.layers.dropout(inputs=dense3, rate=0.1, training=mode == tf.estimator.ModeKeys.TRAIN)
 
   # Logits layer
-  # Input Tensor Shape: [batch_size, 1024]
+  # Input Tensor Shape: [batch_size, 60]
   # Output Tensor Shape: [batch_size, 10]
   logits = tf.layers.dense(inputs=dropout, units=10)
 

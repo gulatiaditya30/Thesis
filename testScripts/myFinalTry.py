@@ -75,10 +75,9 @@ def conv_nn_model_fn(inputImg,labels,mode):
         return tf.estimator.EstimatorSpec(mode = mode, loss = loss , train_op = train_op)
 
     #configure for evaluation mode
-    if mode ==tf.estimator.ModeKEYS.EVAL:{
-            "accuracy": tf.metrics.accuracy(
-            labels=labels, predictions=predictions["classes"])}
-            return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
+    if mode ==tf.estimator.ModeKEYS.EVAL:
+        {"accuracy": tf.metrics.accuracy(labels=labels, predictions=predictions["classes"])}
+        return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 #=========================================== data pre processing ================================
 
