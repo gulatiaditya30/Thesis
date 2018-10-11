@@ -3,6 +3,7 @@ import msvcrt
 import cv2 as cv
 import socket
 import _thread
+import csv
 
 moveDist = 0.02
 img_counter = 0 
@@ -103,7 +104,12 @@ def findRightReading(robo):
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$")
             print("Rivet height:" + str(height))
             print("Rivet Diameter: " + str(finalDiameter))
+            row = [str(height),str(finalDiameter)]
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+            with open('data.csv','a',newline='') as csvFile:
+                writer = csv.writer(csvFile)
+                writer.writerow(row)
+            csvFile.close()
         #if (decD == "1"):
         #    msgArr.append(float(valD))
     s.send(b"Stop#")
