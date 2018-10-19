@@ -43,7 +43,7 @@ def moveAroundCircle(x1,y1,x2,y2,x3,y3):
         currentState.pos.y = circumPoints[1][i]
         print(str(circumPoints[0][i]) +","+str(circumPoints[1][i]))
         robot.set_pose(currentState,vel = 0.050,acc =2 )
-        i=i+1
+        i=i+5
 
     robot.close()
 
@@ -70,11 +70,11 @@ def circumfenceCoordinate(Cx,Cy,r):
     xArr = []
     yArr = []
 
-    while (i<95):
+    while (i<360):
         
 
-        x = ((r* math.cos(i)) + Cx)#*0.001
-        y = ((r*math.sin(i)) + Cy)#*0.001
+        x = (r*(math.cos(math.radians(i))) + Cx)#*0.001
+        y = (r*(math.sin(math.radians(i))) + Cy)#*0.001
         xArr.append(x)
         yArr.append(y)
         p = coordinate(x,y)
@@ -124,7 +124,7 @@ if __name__ == "__main__":
                 i=0
                 z = circlePolation(initialPoints[0],initialPoints[1],initialPoints[2],initialPoints[3],initialPoints[4],initialPoints[5])
                 o = circumfenceCoordinate(z[0],z[1],z[2])
-                while(i<90):
+                while(i<360):
                     xArr.append(o[0][i])
                     yArr.append(o[1][i])
                     i+=1
