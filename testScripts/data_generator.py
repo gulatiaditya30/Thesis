@@ -4,11 +4,12 @@ import cv2 as cv
 import socket
 import _thread
 import csv
+import math
 
 moveDist = 0.02
 img_counter = 0 
 
-
+# exposure should be set to -4 with a distance of camera to plate of 12 cm 
 
 
 
@@ -141,6 +142,34 @@ def moveRobotBack():
     currentState.pos.y -= 0.02
     robot.set_pose(currentState,vel = 0.005,acc =2 )
 
+def imgPreProcessing(imgAdd,counter):
+    data = []
+    img = cv.imread(imgAdd,-1)#'C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/img0.png',-1)
+    height, width ,depth= img.shape
+    print(str(height)+":"+str(width))
+    print("-------------------")
+    img = img[(math.ceil(height/2)-100):(math.ceil(height/2)+100), (math.ceil(width/2)-100):(math.ceil(width/2)+100)]
+
+    height, width ,depth= img.shape
+    print(str(height)+":"+str(width))
+    img =cv.resize(img,(math.ceil(width), math.ceil(height)))
+
+    img = cv.blur(img,(5,5))
+
+    gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    height, width = gray.shape
+
+    edges = cv.Canny(gray,100,150)
+
+    #img = cv.resize(img,( math.ceil(640), math.ceil(6)))
+
+    flatEdge = edges.ravel()
+    data.append(flatEdge)
+    
+
+    cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/postProcessedImage/img"+str(counter)+".png", edges)
+    
+
 
 
 
@@ -150,7 +179,7 @@ if __name__ == '__main__':
     global msgCollectFlag 
     msgCollectFlag= False
     cam = cv.VideoCapture(0)
-    cam.set(cv.CAP_PROP_EXPOSURE, -120) 
+    cam.set(cv.CAP_PROP_EXPOSURE,-4) #range is from -1 to -13 from long exposure to short exposure
     #print(type(robot.get_pose()))
 
     while True:
@@ -209,8 +238,10 @@ if __name__ == '__main__':
             _thread.start_new_thread(get_sensor_data,())
         
         elif(chr(keyInput & 255) == "c"):
-            img_name = "img{}.png".format(img_counter)
+            img_name = "C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/preProcessedImage/img{}.png".format(img_counter)
             cv.imwrite(img_name, frame)
+            imgPreProcessing(img_name,img_counter)
+
             img_counter += 1 
             print("picture taken")
 

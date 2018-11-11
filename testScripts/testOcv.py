@@ -26,7 +26,7 @@ def circumfenceCoordinate(Cx,Cy,r):
 if __name__ == "__main__":
 
     cam = cv.VideoCapture(0)
-    cam.set(cv.CAP_PROP_EXPOSURE,-120)
+    cam.set(cv.CAP_PROP_EXPOSURE,0.25)
 
     
 

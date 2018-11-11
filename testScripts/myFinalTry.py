@@ -79,7 +79,7 @@ def conv_nn_model_fn(inputImg,labels,mode):
         {"accuracy": tf.metrics.accuracy(labels=labels, predictions=predictions["classes"])}
         return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
-#=========================================== data pre processing ================================
+    #=========================================== data pre processing ==========================================
 
 def dataPreProcessing():
     data = []
