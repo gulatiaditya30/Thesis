@@ -97,17 +97,28 @@ def findRightReading(robo):
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
         msgArr = msg.split(",")
         if ((msg != "OK") and (len(msgArr) == 3)):
+            if(msgArr[2]!="INVALID"):
+                height =  float(msgArr[2])
+            else:
+                height = msgArr[2]
+            
+            if(msgArr[0]!="INVALID"):
+                diameterX = float(msgArr[0])
+            else:
+                diameterX = msgArr[0]
 
-            height =  float(msgArr[2])
-            diameterX = float(msgArr[0])
-            diameterY = float(msgArr[1])
-            finalDiameter = max(diameterX,diameterY)
+            if(msgArr[1]!="INVALID"):
+                diameterY = float(msgArr[1])
+            else:
+                diameterY = msgArr[1]
+            #finalDiameter = max(diameterX,diameterY)
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$")
             print("Rivet height:" + str(height))
-            print("Rivet Diameter: " + str(finalDiameter))
-            row = [str(height),str(finalDiameter)]
+            print("Rivet DiameterX: " + str(diameterX))
+            print("Rivet DiameterY: " + str(diameterY))
+            row = [str(height),str(diameterX),str(diameterY)]
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-            with open('data.csv','a',newline='') as csvFile:
+            with open('sensorData/data11.csv','a',newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
             csvFile.close()
@@ -203,36 +214,36 @@ if __name__ == '__main__':
             #moveLeft(0.03)
             print("moved Left")
             
-            get_sensor_data()
+            #get_sensor_data()
            
         elif(chr(keyInput & 255) == "d"):
             _thread.start_new_thread(moveRight, (moveDist,) )            
             #moveRight(0.03)
             print("moved right")
 
-            _thread.start_new_thread(get_sensor_data,())
+            #_thread.start_new_thread(get_sensor_data,())
         elif (chr(keyInput & 255)== "s"):
             
             _thread.start_new_thread(moveDown, (moveDist,) )
             print("moved down")
-            _thread.start_new_thread(get_sensor_data,())
+            #_thread.start_new_thread(get_sensor_data,())
         elif(chr(keyInput & 255)=="w"):
             
             _thread.start_new_thread(moveUp, (moveDist,) )
             print("moved up")
-            _thread.start_new_thread(get_sensor_data,())
+            #_thread.start_new_thread(get_sensor_data,())
 
         elif(chr(keyInput & 255)=="i"):
             
             _thread.start_new_thread(moveIn, (moveDist,) )
             print("moved In")
-            _thread.start_new_thread(get_sensor_data,())
+            #_thread.start_new_thread(get_sensor_data,())
 
         elif(chr(keyInput & 255)=="o"):
             
             _thread.start_new_thread(moveOut, (moveDist,) )
             print("moved Out")
-            _thread.start_new_thread(get_sensor_data,())
+            #_thread.start_new_thread(get_sensor_data,())
           
         elif(chr(keyInput & 255) == "x"):
             _thread.start_new_thread(get_sensor_data,())
