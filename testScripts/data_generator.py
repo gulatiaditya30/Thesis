@@ -10,7 +10,9 @@ moveDist = 0.02
 img_counter = 0 
 
 # exposure should be set to -4 with a distance of camera to plate of 12 cm 
-
+#if the script crahes and you have to again take images please change the img_counter in line 10 variable to last img_counter +1 
+# when collecting data for the new plate please update the plate folder no in line 183 and 254 
+# similarly for new plate  data sensor readings update the csv file name in line 123
 
 
 
@@ -118,7 +120,7 @@ def findRightReading(robo):
             print("Rivet DiameterY: " + str(diameterY))
             row = [str(height),str(diameterX),str(diameterY)]
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-            with open('sensorData/data11.csv','a',newline='') as csvFile:
+            with open('sensorData/data0.csv','a',newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
             csvFile.close()
@@ -178,7 +180,7 @@ def imgPreProcessing(imgAdd,counter):
     data.append(flatEdge)
     
 
-    cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/postProcessedImage/img"+str(counter)+".png", edges)
+    cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/postProcessedImage/plate0/img"+str(counter)+".png", edges)
     
 
 
@@ -249,7 +251,7 @@ if __name__ == '__main__':
             _thread.start_new_thread(get_sensor_data,())
         
         elif(chr(keyInput & 255) == "c"):
-            img_name = "C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/preProcessedImage/img{}.png".format(img_counter)
+            img_name = "C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/preProcessedImage/plate0/img{}.png".format(img_counter)
             cv.imwrite(img_name, frame)
             imgPreProcessing(img_name,img_counter)
 
