@@ -248,16 +248,8 @@ if __name__ == '__main__':
             print("moved Out")
             #_thread.start_new_thread(get_sensor_data,())
           
-        elif(chr(keyInput & 255) == "x"):
-            _thread.start_new_thread(get_sensor_data,())
-        
-        elif(chr(keyInput & 255) == "c"):
-            img_name = "C:/Users/gulat/Desktop/thesis/gitThesis/testScripts/preProcessedImage/plate"+str(plateCounter)+"/img"+str(img_counter)+".png"
-            cv.imwrite(img_name, frame)
-            imgPreProcessing(img_name,img_counter)
 
-            img_counter += 1 
-            print("picture taken")
+       
 
         elif(chr(keyInput & 255) == "k"):
             _thread.start_new_thread(moveRobot,())
