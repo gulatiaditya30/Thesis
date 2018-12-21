@@ -9,12 +9,12 @@ import math
 moveDist = 0.02
 img_counter = 0
 plateCounter = 0
-exposureV = -5
-# exposure should be set to -5 with a distance of camera to plate of 13.5 cm (line no 195)
+exposureV = -2
+# exposure should be set to -5 with a distance of camera to plate of 13.5 cm 
+# do take images of all positions even if there is no rivet in the hole , it will help maintain the labelling 
 #if the script crahes and you have to again take images please change the img_counter in line 10 variable to last img_counter +1 
 # when collecting data for the new plate please update the plate folder no in line 183 and 254 
-# similarly for new plate  data sensor readings update the csv file name in line 123
-
+# similarly for new plate  data sensor readings update the csv file name in line 123 not important while collecting images
 
 
 
@@ -192,8 +192,8 @@ if __name__ == '__main__':
     
     global msgCollectFlag 
     msgCollectFlag= False
-    cam = cv.VideoCapture(1)
-    cam.set(cv.CAP_PROP_EXPOSURE,exposureV) #range is from -1 to -13 from long exposure to short exposure
+    cam = cv.VideoCapture(0)
+    cam.set(15,exposureV) #range is from -1 to -13 from long exposure to short exposure
     #print(type(robot.get_pose()))
 
     while True:
