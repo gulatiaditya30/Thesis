@@ -6,7 +6,7 @@ import _thread
 import csv
 import math
 
-moveDist = 0.02
+moveDist = 0.01
 img_counter = 0
 plateCounter = 0
 exposureV = -2
