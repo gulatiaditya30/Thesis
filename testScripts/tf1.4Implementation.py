@@ -102,11 +102,9 @@ def cnn_model_fn(features, labels, mode):
     return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
 
   # Add evaluation metrics (for EVAL mode)
-  eval_metric_ops = {
-      "accuracy": tf.metrics.accuracy(
-          labels=labels, predictions=predictions["classes"])}
-  return tf.estimator.EstimatorSpec(
-      mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
+  eval_metric_ops = {"accuracy": tf.metrics.accuracy(labels=labels, predictions=predictions["classes"])}
+  
+  return tf.estimator.EstimatorSpec(mode=mode, loss=loss, eval_metric_ops=eval_metric_ops)
 
 
 
@@ -137,11 +135,11 @@ def main1():
 
   # Load training and eval data
   mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-#  print ("444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
+ # print ("444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
  # print (type(mnist))
   train_data = mnist.train.images  # Returns np.array
   #train_data = train_data[0:10000]
-  print(train_data.shape)
+  print(type(train_data))
 
 
   eval_data = mnist.test.images  # Returns np.array
@@ -151,7 +149,7 @@ def main1():
 
   train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
   #train_labels = train_labels[0:10000]
-  print(train_labels[0])
+  print(train_data[101].shape)
 
   eval_data = mnist.test.images  # Returns np.array
   eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
@@ -163,18 +161,17 @@ def main1():
       model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
   # Set up logging for predictions
   # Log the values in the "Softmax" tensor with label "probabilities"
-  #tensors_to_log = {"probabilities": "softmax_tensor"}
-  #logging_hook = tf.train.LoggingTensorHook(
-       #  tensors=tensors_to_log, every_n_iter=50)
+  tensors_to_log = {"probabilities": "softmax_tensor"}
+  logging_hook = tf.train.LoggingTensorHook(tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 5 ,shuffle = True,repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 1,batchSize = 10 ,shuffle = True,repeatCount = 1))
   evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 10, shuffle = True , repeatCount = 4))
   print(evaluate_results)
 
-  #print(evaluation_result)
-  #for key in evaluation_result:
-#      print("  {} ,  was {}".format(key, evaluate_result[key]))
+  print(evaluate_results)
+  for key in evaluate_results:
+      print("  {} ,  was {}".format(key, evaluate_results[key]))
 
 
 print("hello")

@@ -6,9 +6,10 @@ from __future__ import division
 from __future__ import print_function
 
 import matplotlib.pyplot as plt
-
+import csv
 import numpy as np
 import tensorflow as tf
+import cv2 as cv
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
@@ -18,7 +19,7 @@ def cnn_model_fn(features, labels, mode):
   # Input Layer 
   # Reshape X to 4-D tensor: [batch_size, width, height, channels]
   # MNIST images are 28x28 pixels, and have one color channel
-  input_layer = tf.reshape(features["x"], [-1, 28, 28, 1])
+  input_layer = tf.reshape(features["x"], [-1, 40, 40, 1])
 
   # Convolutional Layer #1
   # Computes 32 features using a 5x5 filter with ReLU activation.
@@ -59,7 +60,7 @@ def cnn_model_fn(features, labels, mode):
   # Flatten tensor into a batch of vectors
   # Input Tensor Shape: [batch_size, 7, 7, 64]
   # Output Tensor Shape: [batch_size, 7 * 7 * 64]
-  pool2_flat = tf.reshape(pool2, [-1, 7 * 7 * 64])
+  pool2_flat = tf.reshape(pool2, [-1, 10 * 10 * 64])
 
   # Dense Layer
   # Densely connected layer with 1024 neurons
@@ -78,7 +79,7 @@ def cnn_model_fn(features, labels, mode):
   # Logits layer
   # Input Tensor Shape: [batch_size, 60]
   # Output Tensor Shape: [batch_size, 10]
-  logits = tf.layers.dense(inputs=dropout, units=10)
+  logits = tf.layers.dense(inputs=dropout, units=2)
 
   predictions = {
       # Generate predictions (for PREDICT and EVAL mode)
@@ -131,33 +132,72 @@ def image_Input_func(trainData,labels,noOfEpoch = 1,batchSize =1 ,shuffle = True
 
     return {'x':batch_features},batch_labels
 
+def validityCheck(plateNo,rivetNo):
+    with open('C:/Users/gulat/Desktop/thesis/gitThesis/images/labeledPlate.csv')as labbeledFile:
+        fileRead = csv.reader(labbeledFile,delimiter = ',')
+        x = list(fileRead)
+        if(x[rivetNo][plateNo+1] == 'NA'):
+            return 'NA'
+        else:
+            return str(x[rivetNo][plateNo+1])
+
+
 def main1():
 
   # Load training and eval data
-  mnist = tf.contrib.learn.datasets.load_dataset("mnist")
-#  print ("444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
-  print (type(mnist))
-  train_data = mnist.train.images  # Returns np.array
-  #train_data = train_data[0:10000]
-  #print(train_data.shape)
+  train_data = []
+  eval_data = []
+
+  train_labels = []
+  eval_labels =[]
+  for z in range (0,181,30):
+    for x in range(0,9,1):         #plates
+          for y in range(0,280,1):
+              if(x == 0):
+                if(validityCheck(x,y) != 'NA' ):
+                    eval_labels.append(int(validityCheck(x,y)))
+                    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
+                    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+                    img = cv.resize(img,(40,40))
+                    eval_data.append(img)
+              else:
+                if(validityCheck(x,y) != 'NA' ):
+                    train_labels.append(int(validityCheck(x,y)))
+                    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
+                    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+                    img = cv.resize(img,(40,40))
+                    train_data.append(img)
 
 
-  eval_data = mnist.test.images  # Returns np.array
-  eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
+
+
+  
+  
+  train_data = np.array(train_data,dtype='float32')
+  train_data = np.reshape(train_data,[train_data.shape[0],train_data.shape[1]*train_data.shape[2]])
+
+  eval_data = np.array(eval_data,dtype='float32')
+  eval_data = np.reshape(eval_data,[eval_data.shape[0],eval_data.shape[1]*eval_data.shape[2]])
+ 
+ 
+
+
+  #eval_data = mnist.test.images  # Returns np.array
+  #eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
 
   print ("444444444444444444444444444444444444444444444444444444444444444444444444444444444444444")
   
-  train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
-  print(train_labels[101])
+  #train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
+  print(str(eval_labels[5]))
   
   #train_labels = train_labels[0:10000]
   
 
-  eval_data = mnist.test.images  # Returns np.array
-  eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
+  #eval_data = mnist.test.images  # Returns np.array
+  #eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
 
 
-'''
+
   # Create the Estimator
   mnist_classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
   # Set up logging for predictions
@@ -167,15 +207,15 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 5 ,shuffle = True,repeatCount = 1))
-  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 10, shuffle = True , repeatCount = 4))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 150,batchSize = 100 ,shuffle = True,repeatCount = 1))
+  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 100, shuffle = True , repeatCount = 1))
   print(evaluate_results)
 
   #print(evaluation_result)
   #for key in evaluation_result:
 #      print("  {} ,  was {}".format(key, evaluate_result[key]))
 
-'''
+
 print("hello")
 main1()
 print("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx Done ")

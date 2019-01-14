@@ -7,6 +7,8 @@ if __name__ == "__main__":
         rowNo = 0
         zeros = 0
         ones = 0
+        x = list(csvRead)
+        print(x[279][0])
         for row in csvRead:
             for val in row:
                 if val == '0':
@@ -19,7 +21,3 @@ if __name__ == "__main__":
 
         print("zero = "+str(zeros))
         print("ones = "+str(ones))
-
- 
-
-
