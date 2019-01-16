@@ -69,7 +69,7 @@ def cnn_model_fn(features, labels, mode):
 
   dense2 = tf.layers.dense(inputs = dense, units = 100, activation =tf.nn.relu)
 
-  dense3  = tf.layers.dense(inputs = dense , units  = 60 ,activation = tf.nn.relu)
+  dense3  = tf.layers.dense(inputs = dense2 , units  = 60 ,activation = tf.nn.relu)
 
 
   # Add dropout operation; 0.6 probability that element will be kept
@@ -149,7 +149,7 @@ def main1():
 
   train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
   #train_labels = train_labels[0:10000]
-  print(train_data[101].shape)
+  print(train_data.shape)
 
   eval_data = mnist.test.images  # Returns np.array
   eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)

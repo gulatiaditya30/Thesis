@@ -8,12 +8,12 @@ if __name__ == "__main__":
         zeros = 0
         ones = 0
         x = list(csvRead)
-        print(x[279][0])
-        for row in csvRead:
-            for val in row:
-                if val == '0':
+        print(x[279][9])
+        for row in range(0,280,1):
+            for col in range(1,10,1):
+                if x[row][col] == '0':
                     zeros +=1
-                elif val == '1':
+                elif x[row][col] == '1':
                     ones += 1
             
             rowNo +=1

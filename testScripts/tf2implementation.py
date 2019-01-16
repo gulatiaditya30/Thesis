@@ -19,7 +19,7 @@ def cnn_model_fn(features, labels, mode):
   # Input Layer 
   # Reshape X to 4-D tensor: [batch_size, width, height, channels]
   # MNIST images are 28x28 pixels, and have one color channel
-  input_layer = tf.reshape(features["x"], [-1, 40, 40, 1])
+  input_layer = tf.reshape(features["x"], [-1, 36, 36, 1])
 
   # Convolutional Layer #1
   # Computes 32 features using a 5x5 filter with ReLU activation.
@@ -60,7 +60,7 @@ def cnn_model_fn(features, labels, mode):
   # Flatten tensor into a batch of vectors
   # Input Tensor Shape: [batch_size, 7, 7, 64]
   # Output Tensor Shape: [batch_size, 7 * 7 * 64]
-  pool2_flat = tf.reshape(pool2, [-1, 10 * 10 * 64])
+  pool2_flat = tf.reshape(pool2, [-1, 9 * 9 * 64])
 
   # Dense Layer
   # Densely connected layer with 1024 neurons
@@ -70,7 +70,7 @@ def cnn_model_fn(features, labels, mode):
 
   dense2 = tf.layers.dense(inputs = dense, units = 100, activation =tf.nn.relu)
 
-  dense3  = tf.layers.dense(inputs = dense , units  = 60 ,activation = tf.nn.relu)
+  dense3  = tf.layers.dense(inputs = dense2 , units  = 60 ,activation = tf.nn.relu)
 
 
   # Add dropout operation; 0.6 probability that element will be kept
@@ -131,7 +131,7 @@ def image_Input_func(trainData,labels,noOfEpoch = 1,batchSize =1 ,shuffle = True
     batch_features, batch_labels = iterator.get_next()
 
     return {'x':batch_features},batch_labels
-
+#==============================================================================================================
 def validityCheck(plateNo,rivetNo):
     with open('C:/Users/gulat/Desktop/thesis/gitThesis/images/labeledPlate.csv')as labbeledFile:
         fileRead = csv.reader(labbeledFile,delimiter = ',')
@@ -141,6 +141,36 @@ def validityCheck(plateNo,rivetNo):
         else:
             return str(x[rivetNo][plateNo+1])
 
+#================================================== creating tf record ==================================================
+
+def dataAddressGen():
+    addrs =[]
+    for i in range(0,10549,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
+
+    for i in range(0,10409,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/good/img"+str(i)+".png")
+
+    labels=[]
+    for addr in addrs:
+        if("bad" in addr):
+            labels.append(0)
+        elif("good" in addr):
+            labels.append(1)
+    
+    c = list(zip(addrs, labels))
+    shuffle(c)
+    addrs, labels = zip(*c)
+    
+    return addrs,labels
+
+
+    
+
+
+
+
+#===================================================== main function ====================================================
 
 def main1():
 
@@ -150,7 +180,36 @@ def main1():
 
   train_labels = []
   eval_labels =[]
-  for z in range (0,181,30):
+  
+  for i in range(1000,10549,1):
+      img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
+      img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+      img = cv.resize(img,(36,36))
+      train_data.append(img)
+      train_labels.append(0)
+      
+  for i in range(1000,10408,1):
+      img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/good/img"+str(i)+".png")
+      img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+      img = cv.resize(img,(36,36))
+      train_data.append(img)
+      train_labels.append(1)
+      
+  for i in range(0,1001,1):
+      img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
+      img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+      img = cv.resize(img,(36,36))
+      eval_data.append(img)
+      eval_labels.append(0)
+      
+  for i in range(0,1001,1):
+      img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/good/img"+str(i)+".png")
+      img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+      img = cv.resize(img,(36,36))
+      eval_data.append(img)
+      eval_labels.append(1)
+      
+  '''for z in range (0,181,30):
     for x in range(0,9,1):         #plates
           for y in range(0,280,1):
               if(x == 0):
@@ -167,12 +226,7 @@ def main1():
                     img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
                     img = cv.resize(img,(40,40))
                     train_data.append(img)
-
-
-
-
-  
-  
+                    '''
   train_data = np.array(train_data,dtype='float32')
   train_data = np.reshape(train_data,[train_data.shape[0],train_data.shape[1]*train_data.shape[2]])
 
@@ -190,8 +244,7 @@ def main1():
   #train_labels = np.asarray(mnist.train.labels, dtype=np.int32)
   print(str(eval_labels[5]))
   
-  #train_labels = train_labels[0:10000]
-  
+
 
   #eval_data = mnist.test.images  # Returns np.array
   #eval_labels = np.asarray(mnist.test.labels, dtype=np.int32)
@@ -207,7 +260,7 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 150,batchSize = 100 ,shuffle = True,repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 100 ,shuffle = True,repeatCount = 1))
   evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 100, shuffle = True , repeatCount = 1))
   print(evaluate_results)
 
