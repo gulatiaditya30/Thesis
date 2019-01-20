@@ -148,17 +148,40 @@ def validityCheck(plateNo,rivetNo):
 
 def dataAddressGen():
     addrs = []
-    for i in range(0,10549,1):
-        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
+    for i in range(0,9310,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/trainBad/img"+str(i)+".png")
 
-    for i in range(0,10409,1):
-        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/good/img"+str(i)+".png")
+    for i in range(0,9310,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/trainGood/img"+str(i)+".png")
 
     labels= []
     for addr in addrs:
-        if("bad" in addr):
+        if("trainBad" in addr):
             labels.append(0)
-        elif("good" in addr):
+        elif("trainGood" in addr):
+            labels.append(1)
+    
+    c = list(zip(addrs, labels))
+    shuffle(c)
+    addrs, labels = zip(*c)
+    
+    return addrs,labels
+
+
+#=========================================================================
+def evalDataAddressGen():
+    addrs = []
+    for i in range(0,886,1):#(0,10549,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/evalBad/img"+str(i)+".png")
+
+    for i in range(0,886,1):#(0,10409,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/evalGood/img"+str(i)+".png")
+
+    labels= []
+    for addr in addrs:
+        if("evalBad" in addr):
+            labels.append(0)
+        elif("evalGood" in addr):
             labels.append(1)
     
     c = list(zip(addrs, labels))
@@ -184,9 +207,18 @@ def main1():
   train_labels = []
   eval_labels =[]
 
-
-  allAddress,allLabels = dataAddressGen()
   
+  allAddress,allLabels = dataAddressGen()
+  evalAddress,evalLabels = evalDataAddressGen()
+
+  trainAdd = allAddress
+  train_labels = allLabels
+  train_labels = list(train_labels)
+
+  evalAdd = evalAddress
+  eval_labels =evalLabels
+  eval_labels = list(eval_labels)
+  '''
   trainAdd = allAddress[0:int(0.80*len(allAddress))]
   train_labels = allLabels[0:int(0.80*len(allLabels))]
   train_labels = list(train_labels)
@@ -197,7 +229,7 @@ def main1():
   evalAdd = allAddress[int(0.80*len(allAddress)):]
   eval_labels = allLabels[int(0.80*len(allLabels)):]
   eval_labels = list(eval_labels)
-
+'''
   '''
   for i in range(1000,4000,1):
       img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
@@ -281,8 +313,8 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 14,batchSize = 100 ,shuffle = True,repeatCount = 1))
-  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 100, shuffle = True , repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 5,batchSize = 10 ,shuffle = True,repeatCount = 1))
+  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 10, shuffle = True , repeatCount = 1))
   print(evaluate_results)
 
   #print(evaluation_result)
