@@ -25,7 +25,7 @@ def main1():
   # Load training and eval data
   train_data = []
   eval_data = []
-
+  tot_labels = []
   train_labels = []
   eval_labels =[]
   bNo = 0
@@ -37,17 +37,28 @@ def main1():
           print("plate no :"+ str(x))
           for y in range(0,280,1):
             if(validityCheck(x,y) != 'NA' ):
-                if(validityCheck(x,y)=='0'):
-                    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
-                    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-                    cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/allZeroDeg/img"+str(imgNo)+".png",img)
-                    bNo = bNo + 1
-                elif((validityCheck(x,y))=='1'):
-                    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
-                    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-                    cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/allZeroDeg/img"+str(imgNo)+".png",img)
-                    gNo = gNo + 1
+                with open('../images/organisedImages/allZeroDeg/labelling.csv','a',newline='') as csvFile:
+                    writer = csv.writer(csvFile)
+                    if(validityCheck(x,y)=='0'):
+                        img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
+                        img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+                        cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/allZeroDeg/img"+str(imgNo)+".png",img)
+                        tot_labels.append('0')
+                        writer.writerow([str(imgNo),'0'])
+                        bNo = bNo + 1
+                    elif((validityCheck(x,y))=='1'):
+                        img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
+                        img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+                        cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/allZeroDeg/img"+str(imgNo)+".png",img)
+                        tot_labels.append('1')
+                        writer.writerow([str(imgNo),'1'])
+                        gNo = gNo + 1
+                         
+                csvFile.close()               
                 imgNo = imgNo + 1
+
+
+    print("label length : "+str(len(tot_labels)))            
     print("good: " +str(gNo) + " bad: "+str(bNo) )
 if __name__ == "__main__":
     main1()
