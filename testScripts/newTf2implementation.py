@@ -1,6 +1,8 @@
 
 #GOOD --> 1
 #BAD --> 0
+#ideal edge detection range  = 50-120
+
 
 from __future__ import absolute_import
 from __future__ import division
@@ -15,7 +17,6 @@ import tensorflow as tf
 import cv2 as cv
 
 tf.logging.set_verbosity(tf.logging.INFO)
-
 
 def cnn_model_fn(features, labels, mode):
   """Model function for CNN."""
@@ -313,8 +314,8 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 10,batchSize = 10 ,shuffle = True,repeatCount = 1))
-  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 10, shuffle = True , repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 10 ,shuffle = True,repeatCount = 1))
+  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 1, shuffle = True , repeatCount = 1))
   print(evaluate_results)
 
   #print(evaluation_result)

@@ -42,14 +42,14 @@ def main1():
                     if(validityCheck(x,y)=='0'):
                         img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
                         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-                        cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/allZeroDeg/img"+str(imgNo)+".png",img)
+                        cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/zeroDegBad/img"+str(bNo)+".png",img)
                         tot_labels.append('0')
                         writer.writerow([str(imgNo),'0'])
                         bNo = bNo + 1
                     elif((validityCheck(x,y))=='1'):
                         img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
                         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-                        cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/allZeroDeg/img"+str(imgNo)+".png",img)
+                        cv.imwrite("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/zeroDegGood/img"+str(gNo)+".png",img)
                         tot_labels.append('1')
                         writer.writerow([str(imgNo),'1'])
                         gNo = gNo + 1
