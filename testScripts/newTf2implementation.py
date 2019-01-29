@@ -149,10 +149,10 @@ def validityCheck(plateNo,rivetNo):
 
 def dataAddressGen():
     addrs = []
-    for i in range(0,9310,1):
+    for i in range(0,11087,1):
         addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/trainBad/img"+str(i)+".png")
 
-    for i in range(0,9310,1):
+    for i in range(0,11087,1):
         addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/trainGood/img"+str(i)+".png")
 
     labels= []
@@ -172,17 +172,17 @@ def dataAddressGen():
 #=========================================================================
 def evalDataAddressGen():
     addrs = []
-    for i in range(0,886,1):#(0,10549,1):
-        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/evalBad/img"+str(i)+".png")
+    for i in range(0,50,1):#(0,10549,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/zeroDegEvalBad/img"+str(i)+".png")
 
-    for i in range(0,886,1):#(0,10409,1):
-        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/evalGood/img"+str(i)+".png")
+    for i in range(0,50,1):#(0,10409,1):
+        addrs.append("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/zeroDegEvalGood/img"+str(i)+".png")
 
     labels= []
     for addr in addrs:
-        if("evalBad" in addr):
+        if("zeroDegEvalBad" in addr):
             labels.append(0)
-        elif("evalGood" in addr):
+        elif("ZeroDegEvalGood" in addr):
             labels.append(1)
     
     c = list(zip(addrs, labels))
@@ -314,8 +314,8 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 10 ,shuffle = True,repeatCount = 1))
-  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 1, shuffle = True , repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 1,batchSize = 10 ,shuffle = True,repeatCount = 1))
+  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 10, shuffle = False , repeatCount = 1))
   print(evaluate_results)
 
   #print(evaluation_result)

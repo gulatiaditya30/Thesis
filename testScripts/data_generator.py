@@ -121,7 +121,7 @@ def findRightReading(robo):
             print("Rivet DiameterY: " + str(diameterY))
             row = [str(height),str(diameterX),str(diameterY)]
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-            with open('sensorData/data3.csv','a',newline='') as csvFile:
+            with open('sensorData/data5.csv','a',newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
             csvFile.close()
