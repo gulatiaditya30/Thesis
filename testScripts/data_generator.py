@@ -5,6 +5,7 @@ import socket
 import _thread
 import csv
 import math
+import time
 
 moveDist = 0.01
 img_counter = 0
@@ -121,7 +122,7 @@ def findRightReading(robo):
             print("Rivet DiameterY: " + str(diameterY))
             row = [str(height),str(diameterX),str(diameterY)]
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-            with open('sensorData/data5.csv','a',newline='') as csvFile:
+            with open('sensorData/data3.csv','a',newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
             csvFile.close()
@@ -261,6 +262,12 @@ if __name__ == '__main__':
 
         elif(chr(keyInput & 255) == "k"):
             _thread.start_new_thread(moveRobot,())
+
+        elif(chr(keyInput & 255) == "l"):
+            for l in range(0,20):
+                _thread.start_new_thread(moveRobot,())
+                time.sleep(12)
+            print("********************************************** DONE ***************************************************************")
 
         elif(chr(keyInput & 255 ) == "b"):
             _thread.start_new_thread(moveRobotBack,())
