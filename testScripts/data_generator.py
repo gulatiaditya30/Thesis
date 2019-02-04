@@ -264,7 +264,7 @@ if __name__ == '__main__':
             _thread.start_new_thread(moveRobot,())
 
         elif(chr(keyInput & 255) == "l"):
-            for l in range(0,20):
+            for l in range(0,40):
                 _thread.start_new_thread(moveRobot,())
                 time.sleep(12)
             print("********************************************** DONE ***************************************************************")
