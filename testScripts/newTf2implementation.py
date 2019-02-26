@@ -2,7 +2,7 @@
 #GOOD --> 1
 #BAD --> 0
 #ideal edge detection range  = 50-120
-
+#data label excel formula =AND((A1/1000)<-1.3;(A1/1000)>-2.6;(B1/1000)>5.6;(B1/1000)<7.5;(C1/1000)>5.6;(C1/1000)<7.5;E1=1)
 
 from __future__ import absolute_import
 from __future__ import division
@@ -93,7 +93,7 @@ def cnn_model_fn(features, labels, mode):
       "probabilities": tf.nn.softmax(logits, name="softmax_tensor")
   }
   if mode == tf.estimator.ModeKeys.PREDICT:
-    return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions)
+    return tf.estimator.EstimatorSpec(mode=mode, predictions=predictions,export_outputs = {'predict' : tf.estimator.export.PredictOutput(predictions)})
 
   # Calculate Loss (for both TRAIN and EVAL modes)
   loss = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
@@ -135,7 +135,33 @@ def image_Input_func(trainData,labels,noOfEpoch = 1,batchSize =1 ,shuffle = True
     batch_features, batch_labels = iterator.get_next()
 
     return {'x':batch_features},batch_labels
-#==============================================================================================================
+#===================================================Serving Input Function ===========================================================
+
+'''def serving_input_receiver_fn():
+  inputs = {
+    'x': tf.placeholder(tf.float32, [1, 36, 36, 1]),
+  }
+  return tf.estimator.export.ServingInputReceiver(inputs, inputs)'''
+
+def serving_input_receiver_fn():
+    """
+    This is used to define inputs to serve the model.
+    :return: ServingInputReciever
+    """
+    reciever_tensors = {
+        # The size of input image is flexible.
+        "x": tf.placeholder(tf.float32, [None, None, None, 1]),
+    }
+
+    # Convert give inputs to adjust to the model.
+    features = {
+        # Resize given images.
+        "x": tf.image.resize_images(reciever_tensors["x"], [36, 36]),
+    }
+    return tf.estimator.export.ServingInputReceiver(receiver_tensors=reciever_tensors,features=features)
+
+#=======================================================================================================================================
+
 def validityCheck(plateNo,rivetNo):
     with open('C:/Users/gulat/Desktop/thesis/gitThesis/images/labeledPlate.csv')as labbeledFile:
         fileRead = csv.reader(labbeledFile,delimiter = ',')
@@ -219,34 +245,8 @@ def main1():
   evalAdd = evalAddress
   eval_labels =evalLabels
   eval_labels = list(eval_labels)
-  '''
-  trainAdd = allAddress[0:int(0.80*len(allAddress))]
-  train_labels = allLabels[0:int(0.80*len(allLabels))]
-  train_labels = list(train_labels)
 
-  print("how u like me now !! "+ str(type(train_data)))
-  
 
-  evalAdd = allAddress[int(0.80*len(allAddress)):]
-  eval_labels = allLabels[int(0.80*len(allLabels)):]
-  eval_labels = list(eval_labels)
-'''
-  '''
-  for i in range(1000,4000,1):
-      img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
-      img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-      img = cv.resize(img,(36,36))
-      train_data.append(img)
-      train_labels.append(0)
-      
-  for i in range(0,1001,1):
-      img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/organisedImages/bad/img"+str(i)+".png")
-      img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-      img = cv.resize(img,(36,36))
-      eval_data.append(img)
-      eval_labels.append(0)
-
-  '''
   for tradd in trainAdd:
       img = cv.imread(tradd)
       img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
@@ -260,25 +260,7 @@ def main1():
       eval_data.append(img)
    
 
-  '''
-  for z in range (0,181,30):
-    for x in range(0,9,1):         #plates
-          for y in range(0,280,1):
-              if(x == 0):
-                if(validityCheck(x,y) != 'NA' ):
-                    eval_labels.append(int(validityCheck(x,y)))
-                    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
-                    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-                    img = cv.resize(img,(40,40))
-                    eval_data.append(img)
-              else:
-                if(validityCheck(x,y) != 'NA' ):
-                    train_labels.append(int(validityCheck(x,y)))
-                    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/postProcessedImage/degree"+str(z)+"/plate"+str(x)+"/img"+str(y)+".png")
-                    img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-                    img = cv.resize(img,(40,40))
-                    train_data.append(img)
-                    '''
+
   train_data = np.array(train_data,dtype='float32')
   train_data = np.reshape(train_data,[train_data.shape[0],train_data.shape[1]*train_data.shape[2]])
 
@@ -314,13 +296,24 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 1,batchSize = 10 ,shuffle = True,repeatCount = 1))
-  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 10, shuffle = False , repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 10 ,shuffle = True,repeatCount = 1))
+  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 1, shuffle = False , repeatCount = 1))
   print(evaluate_results)
+
+  mnist_classifier.export_savedmodel("C:/Users/gulat/Desktop/thesis/gitThesis/ServingModels/rivetModel/",serving_input_receiver_fn=serving_input_receiver_fn)
+
 
   #print(evaluation_result)
   #for key in evaluation_result:
 #      print("  {} ,  was {}".format(key, evaluate_result[key]))
+
+  
+
+
+
+
+
+
 
 
 print("hello")
