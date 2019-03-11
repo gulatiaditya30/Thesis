@@ -288,7 +288,7 @@ def main1():
   
 
   # Create the Estimator
-  mnist_classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="/tmp/mnist_convnet_model")
+  mnist_classifier = tf.estimator.Estimator(model_fn=cnn_model_fn, model_dir="/tmp/rivetQmodel")
   # Set up logging for predictions
   # Log the values in the "Softmax" tensor with label "probabilities"
   #tensors_to_log = {"probabilities": "softmax_tensor"}
@@ -296,7 +296,7 @@ def main1():
        #  tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 10 ,shuffle = True,repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 10,batchSize = 10 ,shuffle = True,repeatCount = 1))
   evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 1, shuffle = False , repeatCount = 1))
   print(evaluate_results)
 

@@ -45,9 +45,6 @@ def run(host, port, image, model, signature_name):
     end = time.time()
     time_diff = end - start
 
-    # Reference:
-    # How to access nested values
-    # https://stackoverflow.com/questions/44785847/how-to-retrieve-float-val-from-a-predictresponse-object
     print(result)
     print('time elapased: {}'.format(time_diff))
 

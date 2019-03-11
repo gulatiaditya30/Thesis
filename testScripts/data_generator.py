@@ -122,7 +122,7 @@ def findRightReading(robo):
             print("Rivet DiameterY: " + str(diameterY))
             row = [str(height),str(diameterX),str(diameterY)]
             print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-            with open('sensorData/data3.csv','a',newline='') as csvFile:
+            with open('sensorData/dataVideo.csv','a',newline='') as csvFile:
                 writer = csv.writer(csvFile)
                 writer.writerow(row)
             csvFile.close()
@@ -194,13 +194,13 @@ if __name__ == '__main__':
     global msgCollectFlag 
     msgCollectFlag= False
     cam = cv.VideoCapture(0)
-    cam.set(15,exposureV) #range is from -1 to -13 from long exposure to short exposure
+    cam.set(15,-5) #range is from -1 to -13 from long exposure to short exposure
     #print(type(robot.get_pose()))
 
     while True:
 
         ret,frame = cam.read()
-        cv.imshow("test",frame)    
+        cv.imshow("test",frame,)    
 
         keyInput  =  cv.waitKey(1)
 
@@ -266,7 +266,7 @@ if __name__ == '__main__':
         elif(chr(keyInput & 255) == "l"):
             for l in range(0,40):
                 _thread.start_new_thread(moveRobot,())
-                time.sleep(12)
+                time.sleep(15)
             print("********************************************** DONE ***************************************************************")
 
         elif(chr(keyInput & 255 ) == "b"):
