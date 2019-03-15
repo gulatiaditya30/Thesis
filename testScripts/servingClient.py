@@ -4,6 +4,7 @@ import argparse
 import time
 import numpy as np
 import cv2 as cv
+import random
 #from scipy.misc import imread
 
 import grpc
@@ -15,11 +16,16 @@ from tensorflow_serving.apis import prediction_service_pb2_grpc
 
 #docker run --name rivetserving -e MODEL_NAME="rivetQmodel" -p 8501:8501 --mount type=bind,source=C:/Users/gulat/Desktop/thesis/gitThesis/ServingModels/rivetModel,target=/models/rivetQmodel -t tensorflow/serving 
 #C:\Users\gulat\Desktop\thesis\gitThesis\testScripts>python servingClient.py --image C:\Users\gulat\Desktop\img17.png --model rivetQmodel --host "172.0.0.2" --port 8500 --signature_name serving_default
-#docker run --rm -v C:/Users/gulat/Desktop/thesis/gitThesis/ServingModels/rivetModel:/models/rivetQmodel -e MODEL_NAME="rivetQmodel" -e MODEL_PATH="/models/rivetQmodel" --name rivetserving tensorflow/serving
-#C:\Users\gulat\Desktop\thesis\gitThesis\testScripts>python servingClient.py --image C:\Users\gulat\Desktop\img0.png --model rivetQmodel --host "127.0.0.1" --port 8500 --signature_name serving_default
+
+#working
+
+#docker run --rm -p 8500:8500 -v C:/Users/gulat/Desktop/thesis/gitThesis/ServingModels/rivetModel/rivetQmodel:/models/rivetQmodel -e MODEL_NAME="rivetQmodel" -e MODEL_PATH="/models/rivetQmodel" --name rivetserving tensorflow/serving
+#C:\Users\gulat\Desktop\thesis\gitThesis\testScripts> python servingClient.py --image C:\Users\gulat\Desktop\zeroDegEvalGood\img0.png --model rivetQmodel --host "127.0.0.1" --port 8500 --signature_name serving_default
 
 def run(host, port, image, model, signature_name):
 
+    allGood = ["All is well","HAKUNA MATATA","AAll's GUT","Next Please","Yeah this will work","Damn Lookin Fine !!!!"]
+    allBad =["Sir Please step aside, further inspection required !!", "Woow you need some working","Serously !! you thought riveting is easy !!","DENIED", "You need some workin man !!" ]
     channel = grpc.insecure_channel('{host}:{port}'.format(host=host, port=port))
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 
@@ -42,10 +48,15 @@ def run(host, port, image, model, signature_name):
 
     result = stub.Predict(request, 10)
 
+    
+    badPrediction = result.outputs["probabilities"].float_val[0]
+    goodPrediction = result.outputs["probabilities"].float_val[1]
     end = time.time()
     time_diff = end - start
-
-    print(result)
+    if(badPrediction>goodPrediction):
+        print("B "+ allBad[random.randint(0,len(allBad))])
+    elif(goodPrediction>badPrediction):
+        print("G "+ allGood[random.randint(0,len(allGood))])
     print('time elapased: {}'.format(time_diff))
 
 
