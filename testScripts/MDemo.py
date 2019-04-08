@@ -21,7 +21,7 @@ moveDist = 0.01
 img_counter = 0
 plateCounter = 0
 exposureV = -2
-#ideal edge detection range  = 50-120
+#ideal edge detection range  = 50-120 ?? working 50-100
 # exposure should be set to -5 with a distance of camera to plate of 13.5 cm 
 # do take images of all positions even if there is no rivet in the hole , it will help maintain the labelling 
 #if the script crahes and you have to again take images please change the img_counter in line 10 variable to last img_counter +1 
@@ -107,19 +107,27 @@ def imgPreProcessing(imgAdd):
     height, width ,depth= img.shape
     img = img[(math.ceil(height/2)-50):(math.ceil(height/2)+50), (math.ceil(width/2)-50):(math.ceil(width/2)+50)]
     height, width ,depth= img.shape
-    img =cv.resize(img,(math.ceil(width), math.ceil(height)))
+    #img =cv.resize(img,(math.ceil(width), math.ceil(height)))
 
     img = cv.blur(img,(5,5))
 
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     height, width = gray.shape
 
-    edges = cv.Canny(gray,50,120)
+    
+
+    edges = cv.Canny(gray,50,100)
+
+    #cv.imshow('image',edges)
+    #cv.waitKey(0)
+    #cv.destroyAllWindows()
+
+    
 
     #===============================================================================================
 
-    allGood = ["All is well","HAKUNA MATATA","AAll's GUT","Next Please","Yeah this will work","Damn Lookin Fine !!!!"]
-    allBad =["Sir Please step aside, further inspection required !!", "Woow you need some working","Serously !! you thought riveting is easy !!","DENIED", "You need some workin man !!" ]
+    allGood = ["All is well","HAKUNA MATATA","AAll's GUT","Next Please","Yeah this will work"]#"Damn Lookin Fine !!!!"]
+    allBad =["Sir Please step aside for further inspection !!", "Aaaah you need some working","Serously !! you thought riveting is easy !!","DENIED"]
     channel = grpc.insecure_channel("127.0.0.1:8500")
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 
@@ -147,10 +155,12 @@ def imgPreProcessing(imgAdd):
     end = time.time()
     time_diff = end - start
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@***********************************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print("Good Pre:"+ str(goodPrediction))
+    print("bad Pre: "+str(badPrediction))
     if(badPrediction>goodPrediction):
-        print("B "+ allBad[random.randint(0,len(allBad))])
+        print("BAD : "+ allBad[int(random.randint(0,len(allBad)-1))])
     elif(goodPrediction>badPrediction):
-        print("G "+ allGood[random.randint(0,len(allGood))])
+        print("GOOD : "+ allGood[int(random.randint(0,len(allGood)-1))])
     print('time elapased: {}'.format(time_diff))
     
 
@@ -183,14 +193,14 @@ if __name__ == '__main__':
             exit()
         
         elif(chr(keyInput & 255)=="a"):
-            _thread.start_new_thread(moveLeft, (moveDist,) )
+            _thread.start_new_thread(moveLeft, (.02,) )
             #moveLeft(0.03)
             print("moved Left")
             
             #get_sensor_data()
            
         elif(chr(keyInput & 255) == "d"):
-            _thread.start_new_thread(moveRight, (moveDist,) )            
+            _thread.start_new_thread(moveRight, (.02,) )            
             #moveRight(0.03)
             print("moved right")
 
@@ -219,6 +229,8 @@ if __name__ == '__main__':
             #_thread.start_new_thread(get_sensor_data,())
         
         elif(chr(keyInput & 255) == "c"):
+            img_name = "C:/Users/gulat/Desktop/nnnnnnnnn/img"+str(img_counter)+".png"
+            #cv.imwrite(img_name, frame)
             imgPreProcessing(frame)
 
             img_counter += 1 

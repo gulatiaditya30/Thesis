@@ -18,6 +18,10 @@ import cv2 as cv
 
 tf.logging.set_verbosity(tf.logging.INFO)
 
+learnRate = 0.001
+epochNo = 10
+batchSizeNo = 100
+
 def rivet_quality_model_fn(features, labels, mode):
   """Model function for CNN."""
   # Input Layer 
@@ -78,7 +82,7 @@ def rivet_quality_model_fn(features, labels, mode):
 
 
   # Add dropout operation; 0.6 probability that element will be kept
-  dropout = tf.layers.dropout(inputs=dense3, rate=0.1, training=mode == tf.estimator.ModeKeys.TRAIN)
+  dropout = tf.layers.dropout(inputs=dense3, rate=0.2, training=mode == tf.estimator.ModeKeys.TRAIN)
 
   # Logits layer
   # Input Tensor Shape: [batch_size, 60]
@@ -100,10 +104,8 @@ def rivet_quality_model_fn(features, labels, mode):
 
   # Configure the Training Op (for TRAIN mode)
   if mode == tf.estimator.ModeKeys.TRAIN:
-    optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.001)
-    train_op = optimizer.minimize(
-        loss=loss,
-        global_step=tf.train.get_global_step())
+    optimizer = tf.train.GradientDescentOptimizer(learning_rate=learnRate)
+    train_op = optimizer.minimize(loss=loss,global_step=tf.train.get_global_step())
     return tf.estimator.EstimatorSpec(mode=mode, loss=loss, train_op=train_op)
 
   # Add evaluation metrics (for EVAL mode)
@@ -291,21 +293,20 @@ def main1():
   mnist_classifier = tf.estimator.Estimator(model_fn=rivet_quality_model_fn, model_dir="/tmp/rivetQmodel")
   # Set up logging for predictions
   # Log the values in the "Softmax" tensor with label "probabilities"
-  #tensors_to_log = {"probabilities": "softmax_tensor"}
-  #logging_hook = tf.train.LoggingTensorHook(
-       #  tensors=tensors_to_log, every_n_iter=50)
+  tensors_to_log = {"probabilities": "softmax_tensor"}
+  logging_hook = tf.train.LoggingTensorHook(tensors=tensors_to_log, every_n_iter=50)
 
 
-  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = 2,batchSize = 10 ,shuffle = True,repeatCount = 1))
-  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data, labels = eval_labels, batchSize = 1, shuffle = False , repeatCount = 1))
+  mnist_classifier.train(input_fn = lambda : image_Input_func(trainData = train_data,labels =train_labels,noOfEpoch = epochNo,batchSize = batchSizeNo ,shuffle = True,repeatCount = 1))
+  evaluate_results = mnist_classifier.evaluate(input_fn = lambda : image_Input_func(trainData = eval_data,noOfEpoch =1, labels = eval_labels, batchSize = 1, shuffle = True , repeatCount = 1))
   print(evaluate_results)
 
   mnist_classifier.export_savedmodel("C:/Users/gulat/Desktop/thesis/gitThesis/ServingModels/rivetModel/",serving_input_receiver_fn=serving_input_receiver_fn)
 
 
-  #print(evaluation_result)
-  #for key in evaluation_result:
-#      print("  {} ,  was {}".format(key, evaluate_result[key]))
+  #print(evaluate_result)
+  for key in evaluate_results:
+      print("  {} ,  was {}".format(key, evaluate_results[key]))
 
   
 

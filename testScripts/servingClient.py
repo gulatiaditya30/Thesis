@@ -5,6 +5,7 @@ import time
 import numpy as np
 import cv2 as cv
 import random
+import math
 #from scipy.misc import imread
 
 import grpc
@@ -25,18 +26,35 @@ from tensorflow_serving.apis import prediction_service_pb2_grpc
 def run(host, port, image, model, signature_name):
 
     allGood = ["All is well","HAKUNA MATATA","AAll's GUT","Next Please","Yeah this will work","Damn Lookin Fine !!!!"]
-    allBad =["Sir Please step aside, further inspection required !!", "Woow you need some working","Serously !! you thought riveting is easy !!","DENIED", "You need some workin man !!" ]
+    allBad =["Sir Please step aside for further inspection !!", "Aaah you need some working","Serously !! you thought riveting is easy !!","DENIED", "You need some workin man !!" ]
     channel = grpc.insecure_channel('{host}:{port}'.format(host=host, port=port))
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 
     # Read an image
     data = cv.imread(image)
     print("hello")
+
+    height, width ,depth= data.shape
+    data = data[(math.ceil(height/2)-50):(math.ceil(height/2)+50), (math.ceil(width/2)-50):(math.ceil(width/2)+50)]
+    height, width ,depth= data.shape
+    #data =cv.resize(data,(math.ceil(width), math.ceil(height)))
+
+    data = cv.blur(data,(5,5))
+
+
     data = cv.cvtColor(data, cv.COLOR_BGR2GRAY)
+    data = cv.Canny(data,50,90)
+
+    cv.imshow("test",data)    
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+
     data =cv.resize(data,(36,36))
 
+    
+
+
     data = data.astype(np.float32)
-    print(data.shape)
 
     start = time.time()
 
@@ -48,19 +66,30 @@ def run(host, port, image, model, signature_name):
 
     result = stub.Predict(request, 10)
 
-    
+
     badPrediction = result.outputs["probabilities"].float_val[0]
     goodPrediction = result.outputs["probabilities"].float_val[1]
     end = time.time()
     time_diff = end - start
+    bad = "B " + str(allBad[random.randint(0,len(allBad)-1)])
+    good = "G " + str(allGood[random.randint(0,len(allGood)-1)])
     if(badPrediction>goodPrediction):
-        print("B "+ allBad[random.randint(0,len(allBad))])
+        #print("B "+ allBad[random.randint(0,len(allBad))])
+        return bad
     elif(goodPrediction>badPrediction):
-        print("G "+ allGood[random.randint(0,len(allGood))])
+        #print("G "+ allGood[random.randint(0,len(allGood))])
+        return good        
     print('time elapased: {}'.format(time_diff))
 
 
 if __name__ == '__main__':
+
+
+    for i in range(0,18,1):
+
+        print("image_"+str(i) + " :"+ run("127.0.0.1","8500","C:/Users/gulat/Desktop/nnnnnnnnn/img"+str(i)+".png","rivetQmodel","serving_default"))
+    
+    '''
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', help='Tensorflow server host name', default='0.0.0.0', type=str)
     parser.add_argument('--port', help='Tensorflow server port number', default=8500, type=int)
@@ -69,4 +98,6 @@ if __name__ == '__main__':
     parser.add_argument('--signature_name', help='Signature name of saved TF model',default='serving_default', type=str)
 
     args = parser.parse_args()
+    
     run(args.host, args.port, args.image, args.model,args.signature_name)
+    '''
