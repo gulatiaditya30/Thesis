@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import preprocessing
 import os
 
-'''
+'''  normalising and orrienting data row wise 
 for j in range(0,1,1):  # plate no
     
     for i in range(0,280,1): # the rivet no
@@ -46,8 +46,8 @@ for j in range(0,1,1):  # plate no
         ftFile.close()
         fileOut.close()
     print("++++++++++++++++++++++"+str(j)+"Plate done ++++++++++++++++++++++++++++++++++")
-    '''
-for j in range(0,9,1):
+    
+for j in range(0,9,1):                                    #putting every thing into one file
     for q,w,files in os.walk("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/ft_plate_"+str(j)+"/normalised"):
         for f in files:
             with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/ft_plate_"+str(j)+"/normalised/"+str(f)) as fileRead:
@@ -68,6 +68,24 @@ for j in range(0,9,1):
             newNormalWrite.close()
 
         print(" plate no : "+str(j)+" done ==========")
+    '''
+
+N=25
+with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/ftDataColumwise.csv") as withoutAvg:
+    with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/movingAvgFtDataColumwise.csv","a",newline='') as columnFtFile:
+        withoutAvgReader = csv.reader(withoutAvg,delimiter=',')
+        k=1
+        for row in withoutAvgReader:
+            row = list(map(float, row[1:len(row)-2]))
+            print(" ----- k:"+ str(k))
+            k=k+1
+            avgRow = np.convolve(row, np.ones((N,))/N, mode='valid')
+            writer= csv.writer(columnFtFile)
+            writer.writerow(avgRow)
+            
+    columnFtFile.close()    
+    withoutAvg.close()
+
 
 
 
