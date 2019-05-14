@@ -49,7 +49,7 @@ def run(host, port, image, model, signature_name):
     cv.waitKey(0)
     cv.destroyAllWindows()
 
-    data =cv.resize(data,(36,36))
+    data =cv.resize(data,(42,42))
 
     
 
