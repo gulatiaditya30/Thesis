@@ -70,6 +70,8 @@ for j in range(0,9,1):                                    #putting every thing i
         print(" plate no : "+str(j)+" done ==========")
     '''
 
+#============================================== moving average smoothing =====================================================
+'''
 N=25
 with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/ftDataColumwise.csv") as withoutAvg:
     with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/movingAvgFtDataColumwise.csv","a",newline='') as columnFtFile:
@@ -86,7 +88,35 @@ with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwis
     columnFtFile.close()    
     withoutAvg.close()
 
+'''
+# listing all 100 values before and after max
+'''
+with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/ftDataColumwise.csv") as withoutShift:
+    with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/MaxValueSynched.csv","a",newline='') as columnFtFileWithShift:
+        withoutAvgReader = csv.reader(withoutShift,delimiter=',')
+        k=1
+        for row in withoutAvgReader:
+            row = list(row[1:len(row)-2])
+            maxIndex = row.index(max(row))
+            print(maxIndex)
+            row1 = row[maxIndex-100:maxIndex+100]
+            writer= csv.writer(columnFtFileWithShift)
+            writer.writerow(row1)
+            
+    columnFtFileWithShift.close()    
+    withoutShift.close()
+'''
 
-
-
-        
+with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/MaxValueSynched.csv") as withoutShift:
+    with open("C:/Users/gulat/Desktop/thesis/gitThesis/trainingData/ftData/columnwise/MaxValueSynched1.csv","a",newline='') as columnFtFileWithShift:
+        withoutAvgReader = csv.reader(withoutShift,delimiter=',')
+        k=1
+        for row in withoutAvgReader:
+            row = list(row)
+            if(row[190]!=""):
+                print(row[190])
+                writer= csv.writer(columnFtFileWithShift)
+                writer.writerow(row)
+            k=k+1
+    columnFtFileWithShift.close()    
+    withoutShift.close()
