@@ -20,7 +20,7 @@ tf.logging.set_verbosity(tf.logging.INFO)
 
 learnRate = 0.001
 epochNo = 10
-batchSizeNo = 100
+batchSizeNo = 10
 
 def rivet_quality_model_fn(features, labels, mode):
   """Model function for CNN."""
