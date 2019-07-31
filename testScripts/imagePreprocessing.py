@@ -8,7 +8,7 @@ import imutils
 
 def dataPreProcessing(imgName):
     data = []
-    img = cv.imread("C:/Users/gulat/Desktop/thesis/preProcessedImage/plate5/" + imgName,-1)
+    img = cv.imread("C:/Users/gulat/Desktop/thesis/gitThesis/images/preProcessedImage/plate0/" + imgName,-1)
     height, width ,depth= img.shape
     print(str(height)+":"+str(width))
     print("-------------------")
@@ -18,10 +18,24 @@ def dataPreProcessing(imgName):
     print(str(height)+":"+str(width))
     img =cv.resize(img,(math.ceil(width), math.ceil(height)))
 
+
     img = cv.blur(img,(5,5))
 
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     height, width = gray.shape
+
+        #============================================================
+    cv.imshow('image',gray)
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+    cv.imwrite("C:/Users/gulat/Desktop/grey.png",gray)
+
+
+    #================================================================
+
+
+
+
 
     edges = cv.Canny(gray,100,150)
 
@@ -41,7 +55,7 @@ def dataPreProcessing(imgName):
 
 def dataPreProcessing1(imgName):
     data = []
-    img = cv.imread("C:/Users/gulat/Desktop/thesis/preProcessedImage/plate8/" + imgName,-1)
+    img = cv.imread("C:/Users/gulat/Desktop/thesis/preProcessedImage/plate0/img8",-1)
     height, width ,depth= img.shape
     print(str(height)+":"+str(width))
     print("-------------------")
@@ -73,12 +87,15 @@ def dataPreProcessing1(imgName):
 
 if __name__ == '__main__':
     
+    
+    dataPreProcessing("img8.png")
+    '''
     for i in range(0,280,1):
         
         
         if(i>=230 and i<280):
-            image  =  dataPreProcessing1("img"+str(i)+".png")
-            cv.imwrite("C:/Users/gulat/Desktop/plate88/img"+str(i)+".png",image)
+            image  =  dataPreProcessing("img"+str(i)+".png")
+            #cv.imwrite("C:/Users/gulat/Desktop/plate88/img"+str(i)+".png",image)
             print("eeeeeeeeeeeeeee     "+str(i)+" rrrrrrrrrrrrrrrrrrr")
         
         #else:
@@ -88,7 +105,7 @@ if __name__ == '__main__':
         #image  =  dataPreProcessing1("img"+str(i)+".png")
         #cv.imwrite("C:/Users/gulat/Desktop/thesis/postProcessedImage/plate5/img"+str(i)+".png",image)
     
-    '''
+    
     processed = dataPreProcessing1("img6.png")
     cv.imshow("processedImagess",processed)
     cv.waitKey(0)

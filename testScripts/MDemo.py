@@ -31,7 +31,7 @@ exposureV = -2
 
 
 def moveLeft(dist):
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.y -= dist
     
@@ -39,14 +39,14 @@ def moveLeft(dist):
     robot.close()
 
 def moveRight(dist):
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.y += dist 
     robot.set_pose(currentState,vel=5)
     robot.close()
 
 def moveUp(dist):
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.z += dist
     robot.set_pose(currentState,vel=5)
@@ -54,28 +54,28 @@ def moveUp(dist):
     
 
 def moveDown(dist):
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.z -= dist
     robot.set_pose(currentState,vel=5) 
     robot.close()
 
 def moveIn(dist):
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.x -= dist
     robot.set_pose(currentState,vel = 5)
     robot.close()
 
 def moveOut(dist):
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.x += dist
     robot.set_pose(currentState,vel = 5)
     robot.close()
 
 def rotate():
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.orient.rotate_xb(90/2)
     robot.set_pose(currentState,vel = 5)
@@ -86,7 +86,7 @@ def rotate():
 def moveRobot():
 
     global msgCollectFlag
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     #currentState.pos.y -= 0.075
     #robot.set_pose(currentState,vel = 5)
@@ -96,7 +96,7 @@ def moveRobot():
     msgCollectFlag =False
 
 def moveRobotBack():
-    robot  = urx.Robot("160.69.69.101")
+    robot  = urx.Robot("160.69.69.125")
     currentState = robot.get_pose()
     currentState.pos.y -= 0.02
     robot.set_pose(currentState,vel = 0.005,acc =2 )
