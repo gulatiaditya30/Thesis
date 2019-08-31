@@ -1,0 +1,37 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Motivation}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Objectives}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Thesis Structure}{section.1}% 4
+\BOOKMARK [1][-]{section.2}{Literature review}{}% 5
+\BOOKMARK [2][-]{subsection.2.1}{Riveting Process}{section.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.1.1}{Existing Riveting Process}{subsection.2.1}% 7
+\BOOKMARK [3][-]{subsubsection.2.1.2}{Industries Involving Riveting}{subsection.2.1}% 8
+\BOOKMARK [3][-]{subsubsection.2.1.3}{Industry Quality Standards}{subsection.2.1}% 9
+\BOOKMARK [2][-]{subsection.2.2}{Human Robot Interaction}{section.2}% 10
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Extended Reality \(XR\)}{subsection.2.2}% 11
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Virtual Reality \(VR\)}{subsection.2.2}% 12
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Augmented Reality \(AR\)}{subsection.2.2}% 13
+\BOOKMARK [2][-]{subsection.2.3}{Classification Methodology}{section.2}% 14
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Artificial Intelligence}{subsection.2.3}% 15
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Machine Learning}{subsection.2.3}% 16
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Unsupervised Learning}{subsection.2.3}% 17
+\BOOKMARK [3][-]{subsubsection.2.3.4}{Supervised Learning}{subsection.2.3}% 18
+\BOOKMARK [1][-]{section.3}{Problem statement}{}% 19
+\BOOKMARK [2][-]{subsection.3.1}{Lack of Real Time Intelligent Autonomous Quality Check }{section.3}% 20
+\BOOKMARK [2][-]{subsection.3.2}{Absence of Ubiquitous Operator Robot Interaction}{section.3}% 21
+\BOOKMARK [1][-]{section.4}{Solution}{}% 22
+\BOOKMARK [1][-]{section.5}{Concept Development}{}% 23
+\BOOKMARK [2][-]{subsection.5.1}{Experiment Setup}{section.5}% 24
+\BOOKMARK [2][-]{subsection.5.2}{Data Description and Data Collection}{section.5}% 25
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Data Description}{subsection.5.2}% 26
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Data Collection}{subsection.5.2}% 27
+\BOOKMARK [2][-]{subsection.5.3}{Data Pre-Processing and Data Labeling.}{section.5}% 28
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Data Pre-Processing}{subsection.5.3}% 29
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Labelling}{subsection.5.3}% 30
+\BOOKMARK [2][-]{subsection.5.4}{Classification of Rivet Quality}{section.5}% 31
+\BOOKMARK [3][-]{subsubsection.5.4.1}{Image Data Classification model}{subsection.5.4}% 32
+\BOOKMARK [3][-]{subsubsection.5.4.2}{Force Torque Data Classification Model}{subsection.5.4}% 33
+\BOOKMARK [3][-]{subsubsection.5.4.3}{Laser Line Sensor Data Classification Model}{subsection.5.4}% 34
+\BOOKMARK [3][-]{subsubsection.5.4.4}{Over All Classification}{subsection.5.4}% 35
+\BOOKMARK [3][-]{subsubsection.5.4.5}{Result Visualisation}{subsection.5.4}% 36
+\BOOKMARK [1][-]{section.6}{Conclusion}{}% 37
